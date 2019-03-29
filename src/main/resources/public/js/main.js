@@ -28,7 +28,7 @@ function createPost() {
         {
             type: "POST",
             url: "/posts",
-            data: {id: 1, userId: 10, title: title, body: body},
+            data: {userId: 10, title: title, body: body},
             success: function () {
 
                 getPosts();
