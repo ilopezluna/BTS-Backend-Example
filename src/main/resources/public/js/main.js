@@ -1,14 +1,42 @@
-$.ajax(
-    {
-        url: "/posts",
-        success: function (result) {
+function getPosts() {
 
+    $.ajax(
+        {
+            type: "GET",
+            url: "/posts",
+            success: function (result) {
 
-            postsTable(result);
+                postsTable(result);
+            }
         }
-    }
-)
-;
+    );
+}
+
+getPosts();
+
+var button = document.getElementById("create-post");
+button.addEventListener("click", createPost);
+
+function createPost() {
+
+    console.log("called!");
+
+    var title = document.getElementById("title").value;
+    var body = document.getElementById("body").value;
+
+    $.ajax(
+        {
+            type: "POST",
+            url: "/posts",
+            data: {id: 1, userId: 10, title: title, body: body},
+            success: function () {
+
+                getPosts();
+            },
+            dataType: "json"
+        }
+    );
+}
 
 
 //console.log("Hello!!!");
@@ -25,7 +53,7 @@ function postsTable(posts, value) {
 
     divtable = divtable + tableHeader();
 
-    for (var i=0; i <posts.length; i++){
+    for (var i = 0; i < posts.length; i++) {
 
         var onePost = posts[i];
 
@@ -41,7 +69,7 @@ function postsTable(posts, value) {
     }
 
     divtable = divtable + "</table>";
-    postsOfTable.innerHTML=divtable;
+    postsOfTable.innerHTML = divtable;
 }
 
 function tableHeader() {
@@ -49,24 +77,24 @@ function tableHeader() {
     return "<thead><tr class='danger'><th>User ID</th><th>ID</th><th>Title</th><th>Body</th></tr></thead>";
 }
 
-function tableFilter(posts){
+function tableFilter(posts) {
 
-    var putFilter =  document.getElementById("user-filter");
+    var putFilter = document.getElementById("user-filter");
     var UserIDs = [];
 
-    for(var f=0; f < posts.length; f++){
+    for (var f = 0; f < posts.length; f++) {
         var post = posts[f];
         var Userid = post.userId;
 
-        if(UserIDs.indexOf(Userid) === -1){
+        if (UserIDs.indexOf(Userid) === -1) {
             UserIDs.push(Userid);
         }
     }
 
     var options = "<option value=''>Show all</option>";
 
-    for(var a=0; a <UserIDs.length; a++ ){
-        options += "<option value ='"+UserIDs[a]+"'>"
+    for (var a = 0; a < UserIDs.length; a++) {
+        options += "<option value ='" + UserIDs[a] + "'>"
             + UserIDs[a] + "</option>";
     }
 
